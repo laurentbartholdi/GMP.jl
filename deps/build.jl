@@ -22,11 +22,11 @@ end
 @osx ? begin
     using Homebrew
     provides(Homebrew.HB, "gmp", libgmp, os = :Darwin)
-    dir = Homebrew.prefix()
+    prefix = Homebrew.prefix()
 end : begin
     provides(Sources, URI("https://gmplib.org/download/gmp/gmp-"*GMP_VERSION*".tar.bz2"), libgmp)
     provides(BuildProcess, Autotools(libtarget = ".libs/libgmp.la"), libgmp)
-    dir = joinpath(Pkg.dir(string(current_module())),"deps","usr")
+    prefix = joinpath(Pkg.dir(string(current_module())),"deps","usr")
 end
 
 try
@@ -36,5 +36,5 @@ end
 
 pathfile = open(joinpath(splitdir(Base.source_path())[1],"path.jl"), "w")
 println(pathfile,"# automatically generated")
-println(pathfile,"dir = \"$dir\"")
+println(pathfile,"prefix = \"$prefix\"")
 close(pathfile)
